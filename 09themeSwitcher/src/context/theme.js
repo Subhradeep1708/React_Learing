@@ -3,6 +3,7 @@ import { createContext } from "react";
 
 
 export const ThemeContext = createContext({
+    // values and empty functions added to the context
     themeMode: "light",
     darkTheme: () => { },
     lightTheme: () => { },
