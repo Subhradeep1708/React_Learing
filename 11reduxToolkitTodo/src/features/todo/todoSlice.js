@@ -12,7 +12,7 @@ export const todoSlice = createSlice({
     initialState,
     reducers: {
         sayHello: sayHello,
-        addTodo: (state, action) => { //state->state value,action-> whatever passed in the func as prop
+        addTodo: (state, action) => { // state->state value,action-> whatever passed in the func as prop
             const todo = { //todo come from prop of function and a todo object is created
                 id: nanoid(),
                 text: action.payload.text
