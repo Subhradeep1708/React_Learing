@@ -4,6 +4,7 @@ import { Client, Databases, ID, Storage, Query } from 'appwrite';
 export class Service {
     client = new Client();
     databases;
+    bucket;
 
     constructor() {
         this.client
@@ -11,7 +12,124 @@ export class Service {
             .setProject(conf.appwriteProjectId)
 
         this.databases = new Databases(this.client)
+        this.bucket = new Storage(this.client)
     }
+
+    async createPost({ title, slug, content, featuredImage, status, userId }) {
+        try {
+            return await this.databases.createDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug,
+                {
+                    title,
+                    content,
+                    featuredImage,
+                    status,
+                    userId
+                }
+            )
+        } catch (error) {
+            console.log("Appwrite Database Error:: createPost Error ", error);
+        }
+    }
+
+    async updatePost(slug, { title, content, featuredImage, status }) {
+        try {
+            return await this.databases.updateDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug, // slug as documentId
+                {
+                    title,
+                    content,
+                    featuredImage,
+                    status
+                }
+            )
+        } catch (error) {
+            console.log("Appwrite Database Error:: updatePost Error ", error);
+        }
+    }
+
+    async deletePost(slug) {
+        try {
+            await this.databases.deleteDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug, // slug as documentId        
+            )
+            return true
+        } catch (error) {
+            console.log("Appwrite Database Error:: deletePost Error ", error);
+            return false
+        }
+    }
+
+    //getting a post using id(slug)
+    async getPost(slug) {
+        try {
+            return await this.databases.getDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                slug, // slug as documentId        
+            )
+        } catch (error) {
+            console.log("Appwrite Database Error:: getPostById Error ", error);
+            return false
+        }
+    }
+
+    //getting all post
+    async getPosts(queries = [Query.equal("status", "active")]) {
+        try {
+            return await this.databases.getDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteCollectionId,
+                queries
+            )
+        } catch (error) {
+            console.log("Appwrite Database Error:: getPosts Error ", error);
+            return false
+        }
+    }
+
+    //TODO: file upload service 
+
+    async uploadFile(file) { // file is actual file(blob)
+        try {
+            return await this.bucket.createFile(
+                conf.appwriteBucketId,
+                ID.unique(),
+                file
+            )
+        } catch (error) {
+            console.log("Appwrite Storage Error:: uploadFile Error ", error);
+        }
+    }
+
+    async deleteFile(fileId) {
+        try {
+            await this.bucket.deleteFile(
+                conf.appwriteBucketId,
+                fileId
+            )
+            return true
+        } catch (error) {
+            console.log("Appwrite Storage Error:: deleteFile Error ", error);
+            return false
+        }
+    }
+
+    getFilePreview(fileId) {
+        return this.Storage.getFilePreview(
+            conf.appwriteBucketId,
+            fileId
+        )
+    }
+
+
+
 }
 
 
