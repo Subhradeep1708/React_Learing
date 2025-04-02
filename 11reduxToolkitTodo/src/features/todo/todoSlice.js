@@ -5,8 +5,8 @@ const initialState = {
 }
 function sayHello() {
     console.log("hello");
-
 }
+
 export const todoSlice = createSlice({
     name: 'todo',
     initialState,
@@ -30,4 +30,4 @@ export const todoSlice = createSlice({
 
 export const { addTodo, removeTodo, updateTodo } = todoSlice.actions
 
-export default todoSlice.reducer
+export default todoSlice.reducer    

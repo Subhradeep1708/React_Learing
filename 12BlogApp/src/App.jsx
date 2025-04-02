@@ -3,7 +3,6 @@ import './App.css'
 import { useDispatch } from 'react-redux'
 import authService from './appwrite/auth'
 import { login, logout } from './store/authSlice'
-import ThemeChanger from './components/Daisy/ThemeChanger'
 import { Footer, Header } from './components'
 // import Outlet from 'react-router-dom'
 
@@ -29,22 +28,27 @@ function App() {
       })
   }, [])
 
+  console.log("Loading State:", loading);
   return (
     !loading ? (
-      <div className='min-h-screen flex flex-wrap content-between text-4xl justify-center items-center'>
-        <ThemeChanger />
+
+      <div className='min-h-screen flex flex-wrap content-between text-4xl justify-center items-center white'>
+        {/* <div className="bg-red-500 p-4">Test</div> */}
+
         <div className="w-full block">
           <Header />
           <main>
-            {/* TODO : <Outlet /> */}
+
           </main>
-          <Footer />
+          {/* <Footer /> */}
         </div>
 
 
-      </div>) : (<>
-        LOADING
-        <div className="skeleton h-32 w-32"></div>
+      </div>
+
+    ) : (<>
+      LOADING...
+      {/* <div className="skeleton h-32 w-32"></div>
 
         <div className="flex w-52 flex-col gap-4">
           <div className="skeleton h-32 w-full"></div>
@@ -61,9 +65,11 @@ function App() {
               <div className="skeleton h-4 w-28"></div>
             </div>
           </div>
-          <div className="skeleton h-32 w-full"></div>
-        </div>
-      </>)
+          <div className="skeleton h-32 w-full"></div> */}
+      {/* </div> */}
+
+
+    </>)
   )
 }
 
